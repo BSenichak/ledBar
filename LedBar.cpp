@@ -14,14 +14,13 @@ void LedBar::begin(int pins[], int colorPins[])
         pinMode(_pins[i], OUTPUT);
     }
     _timer = millis();
-    _timer1 = millis();
 }
 
 void LedBar::setLed(int led, char color)
 {
     for (int i = 0; i < 8; i++)
     {
-        digitalWrite(i, HIGH);
+        digitalWrite(_pins[i], HIGH);
     }
     digitalWrite(_pins[led], LOW);
     switch (color)
@@ -80,24 +79,38 @@ void LedBar::colorWave(int t)
     }
 }
 
-void LedBar::runToRight(int t){
-    if(millis()-_timer1 >= t){
+void LedBar::runToRight(int t)
+{
+    if (millis() - _timer >= t)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            digitalWrite(_pins[i], HIGH);
+        }
         digitalWrite(_pins[_currentLedRun], LOW);
-        digitalWrite(_pins[_currentLedRun-1], HIGH);
         _currentLedRun++;
-        if(_currentLedRun > 7){
+        if (_currentLedRun > 7)
+        {
             _currentLedRun = 0;
         }
+        _timer = millis();
     }
 }
 
-void LedBar::runToLeft(int t){
-    if(millis()-_timer1 >= t){
+void LedBar::runToLeft(int t)
+{
+    if (millis() - _timer >= t)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            digitalWrite(_pins[i], HIGH);
+        }
         digitalWrite(_pins[_currentLedRun], LOW);
-        digitalWrite(_pins[_currentLedRun+1], HIGH);
         _currentLedRun--;
-        if(_currentLedRun < 0){
+        if (_currentLedRun < 0)
+        {
             _currentLedRun = 7;
         }
+        _timer = millis();
     }
 }
